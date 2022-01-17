@@ -39,7 +39,7 @@ end)
 RegisterServerEvent('SmallTattoos:RemoveTattoo')
 AddEventHandler('SmallTattoos:RemoveTattoo', function (tattooList)
 	local xPlayer = QBCore.Functions.GetPlayer(source)
-	exports.oxmysql:update('UPDATE players SET tattoos = ? WHERE citizenid = ?', {
+	MySQL.Async.execute('UPDATE players SET tattoos = ? WHERE citizenid = ?', {
 		json.encode(tattooList),
 		xPlayer.PlayerData.citizenid
 	})

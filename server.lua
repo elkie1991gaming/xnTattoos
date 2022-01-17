@@ -4,7 +4,7 @@ QBCore.Functions.CreateCallback('SmallTattoos:GetPlayerTattoos', function(source
 	local src = source
 	local xPlayer = QBCore.Functions.GetPlayer(src)
 	if xPlayer then
-		exports.oxmysql:execute('SELECT tattoos FROM players WHERE citizenid = ?', {
+		MySQL.Sync.fetchAll('SELECT tattoos FROM players WHERE citizenid = ?', {
 			xPlayer.PlayerData.citizenid
 		}, function(result)
 			if result[1].tattoos then
@@ -24,7 +24,7 @@ QBCore.Functions.CreateCallback('SmallTattoos:PurchaseTattoo', function(source, 
 	if xPlayer.Functions.GetMoney('cash') >= price then
 		xPlayer.Functions.RemoveMoney('cash', price)
 		tattooList[#tattooList + 1] = tattoo
-		exports.oxmysql:update('UPDATE players SET tattoos = ? WHERE citizenid = ?', {
+		MySQL.Async.execute('UPDATE players SET tattoos = ? WHERE citizenid = ?', {
 			json.encode(tattooList),
 			xPlayer.PlayerData.citizenid
 		})
